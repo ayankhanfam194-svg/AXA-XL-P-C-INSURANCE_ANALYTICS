@@ -1,6 +1,6 @@
-#Property & Casualty (P&C) Insurance Data Analytics Project
+# Property & Casualty (P&C) Insurance Data Analytics Project
 
-Project Context: AXA XL Insurance Domain Analytics
+# Project Context: AXA XL Insurance Domain Analytics
 
 This project is built around a simulated 3-year real-world dataset inspired by AXA XL, focusing on Property & Casualty (P&C) insurance.
 
