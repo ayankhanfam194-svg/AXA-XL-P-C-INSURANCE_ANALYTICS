@@ -1,56 +1,48 @@
-# Property & Casualty (P&C) Insurance Data Analytics Project
+# PROPERTY & CASUALTY (P&C) INSURANCE DATA ANALYTICS PROJECT
+# Project Overview & Business Context
 
-# Project Context: AXA XL Insurance Domain Analytics
+This repository contains a data analytics project modeled around the Property & Casualty (P&C) commercial and personal lines insurance operations of AXA XL.
 
-This project is built around a simulated 3-year real-world dataset inspired by AXA XL, focusing on Property & Casualty (P&C) insurance.
+In global insurance firms like AXA XL, data doesn't sit in a single clean spreadsheet. It is distributed across multiple legacy systems—ranging from policyholder management systems and underwriting logs to transactional sales ledgers and claim history tracking systems. The primary goal of this project was to act as a bridge between this raw relational data and real business strategies.
 
-In insurance MNCs, data analysts and risk teams work closely with databases to catch premium leaks, monitor agent sales, check credit risks, and flag suspicious claims. To do this analysis properly, the data is divided into 5 clear tables:
+By building a structured analytics pipeline in SQL, I mapped out how high-risk properties, customer profiles, underwriting exposure, and claims operations interact with each other to impact the company's overall loss ratio.
 
-AXA_CUSTOMERS: Policyholder profiles, ages, credit scores, and driving experience.
-AXA_AGENT_DETAILS: Details of insurance agents, their types, and the regions they manage.
-AXA_PROPERTIES_DETAILS: Structural data of the insured properties, building materials, and their geographic risk zones.
-AXA_POLICY_SALES: The main sales ledger that shows when a policy was bought, the sum insured, base premium, and current status.
-AXA_CLAIM_TABLE: The claims history recording how much was claimed, how much got approved, and fraud flags.
+# 📂 The Data Architecture (What I Worked With)
 
-Technical Approach & SQL Best Practices
-While writing these queries, I focused heavily on data accuracy and optimization. In insurance databases, a common mistake is "data inflation" (where joining sales and claims tables duplicates data and gives wrong financial totals).
+The core analysis is driven by a simulated 3-year P&C dataset divided into 5 distinct tables that represent standard insurance data warehouses:
 
-To solve this and write clean, production-ready code, I used:
-Common Table Expressions (CTEs) & Subqueries to handle complex steps and keep aggregations separate.
-Window Functions (DENSE_RANK, COUNT OVER) for ranking and tracking patterns over time.
-Data Formatting Safeties like UPPER and TRIM to fix case-sensitivity or trailing spaces in text columns, plus proper date casting.
+AXA_CUSTOMERS: Tracks policyholder demographic data, credit risk profiles, and historical driving license experience.
+AXA_AGENT_DETAILS: Maps out the sales distribution channel, sorting active independent brokers and captive agents across distinct territories.
+AXA_PROPERTIES_DETAILS: Houses structural asset data, mapping out construction materials and geographic catastrophe risk boundaries.
+AXA_POLICY_SALES: The primary transactional engine recording policy bind dates, coverage values (Sum Insured), and premiums collected.
+AXA_CLAIM_TABLE: The operational financial ledger containing initial claimed amounts, final approved payouts, and investigative fraud flags.
 
-# # #  Business KPIs & Insights Tracked
+# 🛠️ Data Challenges & Technical Quality Safeguards
+Writing queries for an insurance environment comes with unique data traps. During this project, I ran into and solved several production-level challenges:
+Preventing Data Inflation (The Duplication Trap): A major trap in insurance analytics happens when you directly join sales tables with claim tables. Since one policy can have multiple claims over time, a naive join multiplies the sales premium figures, corrupting the final financial reports. I handled this by isolating claim calculations inside Common Table Expressions (CTEs) before making final joins.
 
-KPI 1: Customer Demographics vs Premium Distribution
-What it does: Breaks down average premiums and total sum insured by gender and marital status to see which customer groups hold the highest liability for the company.
+Text Formatting & Uniform Matching: Insurance data entered manually by agents often has inconsistent text casing or trailing spaces. I enforced data quality safeguards by wrapping keys in UPPER(TRIM(...)) to guarantee 100% accurate table joins.
 
-KPI 2: Agent Sales Ranking
-What it does: Groups and ranks all agents based on the total premium revenue they have generated, sorted from highest to lowest.
+Handling Temporal Logic: Tracking active risk windows or flagging early claims (claims filed too close to the policy bind date) required strict date-type casting and absolute gap calculations using PostgreSQL-compatible syntax.
 
-KPI 3: Property Material and Claims Exposure
-What it does: Combines property data with settled claims. It uses a CTE to avoid double-counting, showing the exact asset exposure vs actual claim payouts for each construction material.
+# 📈 Core Business Deliverables (What this Project Achieves)
 
-KPI 4: Claim Payout Ratio Analysis
-What it does: Finds the financial efficiency of claim settlements by calculating (Total Approved Amount / Total Claimed Amount) * 100 for all settled claims.
+Instead of just writing basic queries, the SQL scripts in this repository are designed to deliver actionable executive insights across three major areas:
 
-KPI 5: Policy Active Days (Aging)
-What it does: Calculates the exact number of days a policy has been active from its bind date up to the current day, which helps teams identify policies coming up for renewal.
+1. Underwriting & Risk Management
+Exposure vs Loss Control: Evaluates how total liability exposure compares to historical claim payouts based on property construction types.
+Early Loss Auditing: Flags high-risk policies where losses occurred within the first 90 days of binding, serving as an automated check for pre-inspection gaps.
+Moral Hazard Analytics: Analyzes if lower financial credit scores show a statistical correlation with confirmed fraudulent claims.
 
-KPI 6: Early Claims Audit (First 90 Days)
-What it does: Flags policies where a claim was filed within the first 90 days of buying the insurance. This helps underwriters look for bad risk-selection or skipped inspections.
+2. Sales & Distribution Channel Performance
+Revenue Tracking: Ranks the entire agency network based on final premium generation to reward top brokers.
+Channel Activation Audit: Uses optimized outer joins to isolate unproductive agents who haven't written a single policy, allowing sales managers to initiate targeted training or database cleanup.
 
-KPI 7: Credit Score vs Claim Fraud
-What it does: Groups customer credit scores into brackets (<600, 600-750, >750) using a CASE WHEN statement and counts the total number of flagged fraud cases in each bracket.
+3. Portfolio & Financial Profiling
+Payout Efficiency: Measures overall financial leakages by calculating the claim payout ratio on approved vs requested amounts.
+Elite Account Segmentation: Profiles high-value accounts (Sum Insured > 5M) against driver maturity metrics to help actuarial teams refine future premium models.
+Project Engineered by: Ayan Iraqui
+Domain Focus: P&C Insurance Analytics | Relational Data Modeling | Performance Optimization
 
-KPI 8: Identifying Unproductive Agents
-What it does: Uses a LEFT JOIN between the agent master list and sales table to pull out agents who haven't made a single sale yet, helping regional managers plan training.
-
-KPI 9: High-Loss Geographic Risk Zones
-What it does: Pinpoints which geographic risk zones have generated the highest total claim payouts, giving data-driven insights to adjust pricing in high-risk locations.
-
-KPI 10: Driving Experience in High-Value Policies
-What it does: Isolates large, high-value accounts (where Sum Insured is over 5,000,000) and finds the average driving experience of those customers to help model future high-end products.
-
-Project by: MOAWIZ RAHMAN
-Focus Areas: Insurance Analytics, SQL Query Optimization, Risk & Claims Analysis.
+Project Engineered by: Moawiz Rahman
+Domain Focus: P&C Insurance Analytics | Relational Data Modeling | Performance Optimization | Insurance Analyst | Data Analyst .
