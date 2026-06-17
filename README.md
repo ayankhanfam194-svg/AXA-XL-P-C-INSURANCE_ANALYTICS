@@ -1,4 +1,4 @@
-# PROPERTY & CASUALTY (P&C) INSURANCE DATA ANALYTICS PROJECT
+# AXA XL PROPERTY & CASUALTY (P&C) INSURANCE DATA ANALYTICS PROJECT
 # Project Overview & Business Context
 
 This repository contains a data analytics project modeled around the Property & Casualty (P&C) commercial and personal lines insurance operations of AXA XL.
